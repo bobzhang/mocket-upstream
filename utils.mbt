@@ -1,5 +1,5 @@
 ///|
-fn hex_digit(b : Byte) -> Int? {
+fn hex_digit(b : Byte) -> Int32? {
   if b >= b'0' && b <= b'9' {
     Some(b.to_int() - b'0'.to_int())
   } else if b >= b'a' && b <= b'f' {
@@ -200,8 +200,8 @@ pub fn form_encode(map : Map[String, String]) -> String {
 fn find_boundary(
   bytes : BytesView,
   boundary : BytesView,
-  start_index : Int,
-) -> Int {
+  start_index : Int32,
+) -> Int32 {
   let len = bytes.length()
   let boundary_len = boundary.length()
   if start_index + boundary_len > len {
@@ -329,7 +329,7 @@ fn parse_multipart_part(
     }
   }
   if name != "" {
-    res.set(name, { filename, content_type, data: body_bytes })
+    res.set(name, { filename, content_type, data: body_bytes, })
   }
 }
 

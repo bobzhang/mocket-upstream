@@ -1,6 +1,7 @@
 ///|
 /// HTTP status codes as registered with IANA.
 /// See: https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
+#derive(ToJson, Eq)
 pub(all) enum StatusCode {
   /// RFC 9110, 15.2.1
   Continue
@@ -126,11 +127,11 @@ pub(all) enum StatusCode {
   NotExtended
   /// RFC 6585, 6
   NetworkAuthenticationRequired
-  Custom(Int)
-} derive(ToJson, Eq)
+  Custom(Int32)
+}
 
 ///|
-pub fn StatusCode::from_int(i : Int) -> StatusCode {
+pub fn StatusCode::from_int(i : Int32) -> StatusCode {
   match i {
     100 => Continue
     101 => SwitchingProtocols
@@ -199,7 +200,7 @@ pub fn StatusCode::from_int(i : Int) -> StatusCode {
 }
 
 ///|
-pub fn StatusCode::to_int(self : StatusCode) -> Int {
+pub fn StatusCode::to_int(self : StatusCode) -> Int32 {
   match self {
     Continue => 100
     SwitchingProtocols => 101

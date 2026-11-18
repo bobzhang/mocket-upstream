@@ -17,8 +17,8 @@ fn match_path(template : String, path : String) -> Map[String, StringView]? {
 fn match_path_segments(
   template_parts : Array[StringView],
   path_parts : Array[StringView],
-  template_idx : Int,
-  path_idx : Int,
+  template_idx : Int32,
+  path_idx : Int32,
   params : Map[String, StringView],
 ) -> Map[String, StringView]? {
   // 都结束了，匹配成功
@@ -113,7 +113,7 @@ fn match_path_segments(
 
 ///|
 priv struct DynamicRouteHandlerEntry {
-  order : Int
+  order : Int32
   handler : HttpHandler
 }
 
@@ -134,14 +134,14 @@ priv struct DynamicRouteTrieNode {
 
 ///|
 priv struct DynamicRouteMatch {
-  order : Int
+  order : Int32
   handler : HttpHandler
   params : Map[String, StringView]
 }
 
 ///|
 fn new_dynamic_route_trie_node() -> DynamicRouteTrieNode {
-  { handler_entry: None, children: {}, edges: [] }
+  { handler_entry: None, children: {}, edges: [], }
 }
 
 ///|
@@ -174,7 +174,7 @@ fn better_dynamic_route_match(
 ///|
 fn dynamic_route_remaining_path(
   path_parts : Array[StringView],
-  path_idx : Int,
+  path_idx : Int32,
 ) -> String {
   let remaining_path = []
   let mut i = path_idx
@@ -240,7 +240,7 @@ fn DynamicRouteTrieNode::insert(
   self : DynamicRouteTrieNode,
   template : String,
   handler : HttpHandler,
-  order : Int,
+  order : Int32,
 ) -> Unit {
   let template_parts = template.split("/")
   let parts = template_parts.to_array()
@@ -249,7 +249,7 @@ fn DynamicRouteTrieNode::insert(
   while i < parts.length() {
     let part = parts[i]
     if part == "**" {
-      node.edges.push(DeepWildcard({ order, handler }))
+      node.edges.push(DeepWildcard({ order, handler, }))
       return
     } else if part == "*" {
       node = match node.wildcard_child() {
@@ -285,7 +285,7 @@ fn DynamicRouteTrieNode::insert(
     i = i + 1
   }
   match node.handler_entry {
-    None => node.handler_entry = Some({ order, handler })
+    None => node.handler_entry = Some({ order, handler, })
     Some(_) => ignore(())
   }
 }
@@ -294,13 +294,13 @@ fn DynamicRouteTrieNode::insert(
 fn DynamicRouteTrieNode::find(
   self : DynamicRouteTrieNode,
   path_parts : Array[StringView],
-  path_idx : Int,
+  path_idx : Int32,
   params : Map[String, StringView],
 ) -> DynamicRouteMatch? {
   let mut found = if path_idx >= path_parts.length() {
     match self.handler_entry {
       Some(entry) =>
-        Some({ order: entry.order, handler: entry.handler, params })
+        Some({ order: entry.order, handler: entry.handler, params, })
       None => None
     }
   } else {
@@ -340,7 +340,11 @@ fn DynamicRouteTrieNode::find(
             dynamic_route_remaining_path(path_parts, path_idx),
           )
         }
-        Some({ order: entry.order, handler: entry.handler, params: next_params })
+        Some({
+          order: entry.order,
+          handler: entry.handler,
+          params: next_params,
+        })
       }
     }
     found = better_dynamic_route_match(found, candidate)
@@ -391,7 +395,7 @@ fn Mocket::insert_dynamic_route(
 fn DynamicRouteTrieNode::find_path(
   self : DynamicRouteTrieNode,
   path : String,
-) -> (HttpHandler, Map[String, StringView], Int)? {
+) -> (HttpHandler, Map[String, StringView], Int32)? {
   let path_parts = path.split("/").collect()
   match self.find(path_parts, 0, {}) {
     Some(found) => Some((found.handler, found.params, found.order))

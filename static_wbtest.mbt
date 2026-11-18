@@ -12,10 +12,16 @@ priv struct MemProvider {
 ///|
 fn MemProvider::new(
   files : Map[String, String],
-  fallthrough? : Bool = false,
-  index_names? : Array[String] = ["index.html"],
+  fallthrough~ : Bool = false,
+  index_names~ : Array[String] = ["index.html"],
 ) -> MemProvider {
-  { files, mime: { "txt": "text/plain" }, fallthrough, index_names, probed: [] }
+  {
+    files,
+    mime: { "txt": "text/plain" },
+    fallthrough,
+    index_names,
+    probed: [],
+  }
 }
 
 ///|
@@ -76,7 +82,7 @@ async fn request(
   app : Mocket,
   http_method : String,
   url : String,
-  headers? : Map[@http.CaseInsensitiveString, StringView] = no_headers(),
+  headers~ : Map[@http.CaseInsensitiveString, StringView] = no_headers(),
 ) -> HttpResponse {
   dispatch_http(app, http_method, url, headers, b"")
 }

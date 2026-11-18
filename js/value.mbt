@@ -31,7 +31,7 @@ pub fn[T] Value::get_with_symbol(self : Value, key : Symbol) -> T {
 }
 
 ///|
-pub fn[T] Value::get_with_index(self : Value, index : Int) -> T {
+pub fn[T] Value::get_with_index(self : Value, index : Int32) -> T {
   self.get_ffi(Value::cast_from(index)).cast()
 }
 
@@ -46,7 +46,7 @@ pub fn[T] Value::set_with_symbol(self : Value, key : Symbol, value : T) -> Unit 
 }
 
 ///|
-pub fn[T] Value::set_with_index(self : Value, index : Int, value : T) -> Unit {
+pub fn[T] Value::set_with_index(self : Value, index : Int32, value : T) -> Unit {
   self.set_ffi(Value::cast_from(index), Value::cast_from(value))
 }
 
@@ -80,7 +80,7 @@ pub fn[Arg, Result] Value::apply_with_symbol(
 /// `self[index](...args)`
 pub fn[Arg, Result] Value::apply_with_index(
   self : Value,
-  index : Int,
+  index : Int32,
   args : Array[Arg],
 ) -> Result {
   self.apply_ffi(Value::cast_from(index), Value::cast_from(args)).cast()
@@ -116,7 +116,7 @@ pub fn[Arg, Result] Value::new_with_symbol(
 /// `new self[index](...args)`
 pub fn[Arg, Result] Value::new_with_index(
   self : Value,
-  index : Int,
+  index : Int32,
   args : Array[Arg],
 ) -> Result {
   self.new_ffi(Value::cast_from(index), Value::cast_from(args)).cast()

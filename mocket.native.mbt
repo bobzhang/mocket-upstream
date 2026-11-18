@@ -23,7 +23,7 @@ priv struct WebSocketOutboundQueue {
 
 ///|
 fn WebSocketOutboundQueue::new() -> WebSocketOutboundQueue {
-  { frames: [], draining: false, closed: false }
+  { frames: [], draining: false, closed: false, }
 }
 
 ///|
@@ -42,7 +42,7 @@ let ws_client_channels : Map[String, Array[String]] = Map([])
 let ws_channel_clients : Map[String, Map[String, Unit]] = Map([])
 
 ///|
-let native_ws_handler_map : Map[Int, Mocket] = Map([])
+let native_ws_handler_map : Map[Int32, Mocket] = Map([])
 
 ///|
 fn request_method_to_string(meth : @http.RequestMethod) -> String {
@@ -141,7 +141,7 @@ fn find_ws_route(
 }
 
 ///|
-fn next_ws_connection_id(port : Int) -> String {
+fn next_ws_connection_id(port : Int32) -> String {
   "native-\{port}-\{@env.now()}"
 }
 
@@ -178,7 +178,7 @@ pub fn unregister_ws_connection(connection_id : String) -> Unit {
 }
 
 ///|
-pub fn register_ws_handler(mocket : Mocket, port : Int) -> Unit {
+pub fn register_ws_handler(mocket : Mocket, port : Int32) -> Unit {
   native_ws_handler_map.set(port, mocket)
 }
 
@@ -431,7 +431,7 @@ async fn handle_http_request(
 }
 
 ///|
-async fn read_body_limited(reader : &@io.Reader, max_size : Int) -> Bytes {
+async fn read_body_limited(reader : &@io.Reader, max_size : Int32) -> Bytes {
   if max_size <= 0 {
     return reader.read_all().binary()
   }
@@ -457,7 +457,7 @@ async fn read_body_limited(reader : &@io.Reader, max_size : Int) -> Bytes {
 }
 
 ///|
-async fn read_ws_limited(reader : &@io.Reader, max_size : Int) -> Bytes? {
+async fn read_ws_limited(reader : &@io.Reader, max_size : Int32) -> Bytes? {
   if max_size <= 0 {
     return Some(reader.read_all().binary())
   }
@@ -484,7 +484,7 @@ async fn read_ws_limited(reader : &@io.Reader, max_size : Int) -> Bytes? {
 
 ///|
 async fn handle_websocket_request(
-  port : Int,
+  port : Int32,
   mocket : Mocket,
   request : @http.Request,
   conn : @http.ServerConnection,
@@ -496,7 +496,7 @@ async fn handle_websocket_request(
       let connection_id = next_ws_connection_id(port)
       let outbound = register_native_ws_connection(connection_id, ws)
       defer outbound.close()
-      let peer = WebSocketPeer::{ connection_id, subscribed_channels: [] }
+      let peer = WebSocketPeer::{ connection_id, subscribed_channels: [], }
       handler(Open(peer))
       try {
         for ;; {
@@ -577,7 +577,7 @@ fn normalize_listen_address(address : String) -> String {
 }
 
 ///|
-pub async fn serve_ffi(mocket : Mocket, port~ : Int) -> Unit noraise {
+pub async fn serve_ffi(mocket : Mocket, port~ : Int32) -> Unit noraise {
   listen_ffi(mocket, "127.0.0.1:\{port}")
 }
 
