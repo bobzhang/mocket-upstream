@@ -53,7 +53,7 @@ pub fn[T] Value::set_with_index(self : Value, index : Int32, value : T) -> Unit 
 ///|
 /// `self(...args)`
 pub fn[Arg, Result] Value::apply(self : Value, args : Array[Arg]) -> Result {
-  self.apply_self_ffi(Value::cast_from(args)).cast()
+  self.apply_self_ffi(Value::cast_from(FixedArray::from_array(args))).cast()
 }
 
 ///|
@@ -63,7 +63,12 @@ pub fn[Arg, Result] Value::apply_with_string(
   key : String,
   args : Array[Arg],
 ) -> Result {
-  self.apply_ffi(Value::cast_from(key), Value::cast_from(args)).cast()
+  self
+  .apply_ffi(
+    Value::cast_from(key),
+    Value::cast_from(FixedArray::from_array(args)),
+  )
+  .cast()
 }
 
 ///|
@@ -73,7 +78,12 @@ pub fn[Arg, Result] Value::apply_with_symbol(
   key : Symbol,
   args : Array[Arg],
 ) -> Result {
-  self.apply_ffi(Value::cast_from(key), Value::cast_from(args)).cast()
+  self
+  .apply_ffi(
+    Value::cast_from(key),
+    Value::cast_from(FixedArray::from_array(args)),
+  )
+  .cast()
 }
 
 ///|
@@ -83,13 +93,18 @@ pub fn[Arg, Result] Value::apply_with_index(
   index : Int32,
   args : Array[Arg],
 ) -> Result {
-  self.apply_ffi(Value::cast_from(index), Value::cast_from(args)).cast()
+  self
+  .apply_ffi(
+    Value::cast_from(index),
+    Value::cast_from(FixedArray::from_array(args)),
+  )
+  .cast()
 }
 
 ///|
 /// `new self(...args)`
 pub fn[Arg, Result] Value::new(self : Value, args : Array[Arg]) -> Result {
-  self.new_self_ffi(Value::cast_from(args)).cast()
+  self.new_self_ffi(Value::cast_from(FixedArray::from_array(args))).cast()
 }
 
 ///|
@@ -99,7 +114,12 @@ pub fn[Arg, Result] Value::new_with_string(
   key : String,
   args : Array[Arg],
 ) -> Result {
-  self.new_ffi(Value::cast_from(key), Value::cast_from(args)).cast()
+  self
+  .new_ffi(
+    Value::cast_from(key),
+    Value::cast_from(FixedArray::from_array(args)),
+  )
+  .cast()
 }
 
 ///|
@@ -109,7 +129,12 @@ pub fn[Arg, Result] Value::new_with_symbol(
   key : Symbol,
   args : Array[Arg],
 ) -> Result {
-  self.new_ffi(Value::cast_from(key), Value::cast_from(args)).cast()
+  self
+  .new_ffi(
+    Value::cast_from(key),
+    Value::cast_from(FixedArray::from_array(args)),
+  )
+  .cast()
 }
 
 ///|
@@ -119,7 +144,12 @@ pub fn[Arg, Result] Value::new_with_index(
   index : Int32,
   args : Array[Arg],
 ) -> Result {
-  self.new_ffi(Value::cast_from(index), Value::cast_from(args)).cast()
+  self
+  .new_ffi(
+    Value::cast_from(index),
+    Value::cast_from(FixedArray::from_array(args)),
+  )
+  .cast()
 }
 
 ///|
@@ -140,7 +170,7 @@ pub impl @json.FromJson for Value with fn from_json(json : Json, path) {
       for x in xs {
         acc.push((@json.from_json(x, path~) : Value))
       }
-      Value::cast_from(acc)
+      Value::cast_from(FixedArray::from_array(acc))
     }
     Object(kvs) => {
       let acc = Object::new()

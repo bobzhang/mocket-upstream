@@ -55,12 +55,9 @@ pub async fn dispatch_http(
     params,
   }
   let responder = mocket.execute_middlewares(event, handler) catch {
-    err => {
-      if @async.is_cancellation_error(err) {
-        raise err
-      }
+    err =>
+      // Cancellation propagates independently of errors in current async.
       mocket.handle_request_error(event, err)
-    }
   }
   responder.options(event.res)
   let buf = Buffer()

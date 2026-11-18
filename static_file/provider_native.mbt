@@ -16,7 +16,7 @@ pub impl ServeStaticProvider for StaticFileProvider with fn get_meta(
     None => None
     Some({ size, mtime, }) => {
       let asset_type = match file_extension(id.to_owned()) {
-        Some(ext) => self.get_type(ext)
+        Some(ext) => ServeStaticProvider::get_type(self, ext)
         None => None
       }
       Some(

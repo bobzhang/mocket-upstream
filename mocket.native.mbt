@@ -420,12 +420,9 @@ async fn handle_http_request(
     headers,
     raw_body,
   ) catch {
-    err => {
-      if @async.is_cancellation_error(err) {
-        raise err
-      }
+    err =>
+      // Cancellation propagates independently of errors in current async.
       HttpResponse::new(InternalServerError).body(err.to_string())
-    }
   }
   send_native_response(request, conn, response)
 }
