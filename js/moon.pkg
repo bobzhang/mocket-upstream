@@ -5,7 +5,9 @@ import {
 
 // Suppress warning 20 from MoonBit's generated native test driver.
 
-warnings = "-20"
+// Imports are used only by the JS-targeted files below.
+
+warnings = "-20-29"
 
 options(
   targets: {

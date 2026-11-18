@@ -1,53 +1,29 @@
-name: check
-
+name: MoonBit
 on:
   push:
-    branches:
-      - master
-      - main   
+    branches: [main, master]
   pull_request:
-
+permissions:
+  contents: read
 jobs:
   check:
-    strategy:    
-      fail-fast: false
     runs-on: ubuntu-latest
-    continue-on-error: false
+    strategy:
+      fail-fast: false
+      matrix:
+        moonbit: [latest, pre-release]
     steps:
       - uses: actions/checkout@v7
         with:
-          submodules: 'recursive'
-
-      - name: install
+          submodules: recursive
+      - name: Install MoonBit
         run: |
-          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
-          echo "$HOME/.moon/bin" >> $GITHUB_PATH
-
-      - name: moon version
-        run: |
-          moon version --all
-
-      - name: moon update
-        run: |
-          moon update
-
-      - name: moon check
-        run: moon check --deny-warn
-
-      - name: moon info
-        run: |
-          moon info --target native
-          git diff --exit-code
-
-      - name: format diff
-        run: |
-          moon fmt
-          git diff --exit-code
-
-      - name: Set ulimit
-        run: |
-          ulimit -s 8176
-
-      - name: moon test
-        run: |
-          moon test --target js,native
+          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash -s -- "${{ matrix.moonbit }}"
+          echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
+      - run: moon version --all
+      - run: moon update
+      - run: moon check --deny-warn --target js,native
+      - run: moon info --target native
+      - run: git diff --exit-code
+      - run: moon fmt --check
+      - run: moon test --target js,native
