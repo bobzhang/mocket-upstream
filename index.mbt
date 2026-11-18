@@ -22,13 +22,16 @@ pub(all) struct Mocket {
   ws_dynamic_routes : Array[(String, WebSocketHandler)]
   ws_clients : Map[String, Unit]
   ws_channels : Map[String, Map[String, Unit]]
-  ws_client_port : Map[String, Int]
-  max_body_size : Int
+  ws_client_port : Map[String, Int32]
+  max_body_size : Int32
   mut error_handler : ErrorHandler
 }
 
 ///|
-pub fn new(base_path? : String = "", max_body_size? : Int = 1048576) -> Mocket {
+pub fn new(
+  base_path~ : String = "",
+  max_body_size~ : Int32 = 1048576,
+) -> Mocket {
   {
     base_path,
     mappings: {},
@@ -50,11 +53,12 @@ pub fn new(base_path? : String = "", max_body_size? : Int = 1048576) -> Mocket {
 ///|
 
 ///|
+#derive(Eq)
 pub(all) enum SameSiteOption {
   Lax
   Strict
   SameSiteNone
-} derive(Eq)
+}
 
 ///|
 pub impl Show for SameSiteOption with fn output(self, logger) -> Unit {
@@ -75,16 +79,17 @@ pub impl ToJson for SameSiteOption with fn to_json(self : SameSiteOption) -> Jso
 }
 
 ///|
+#derive(Eq)
 pub(all) struct CookieItem {
   name : String
   value : String
-  max_age : Int?
+  max_age : Int32?
   path : String?
   domain : String?
   secure : Bool?
   http_only : Bool?
   same_site : SameSiteOption?
-} derive(Eq)
+}
 
 ///|
 pub impl Show for CookieItem with fn output(self, logger) -> Unit {

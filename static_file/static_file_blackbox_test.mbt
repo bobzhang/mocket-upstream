@@ -22,7 +22,7 @@ fn Fixture::create(tag : String) -> Fixture raise {
   @fs.write_string_to_file("\{root}/sub/index.html", "sub index")
   // Outside the served root: must never be reachable through the mount.
   @fs.write_string_to_file("\{base}/secret.txt", "outside root")
-  { base, root }
+  { base, root, }
 }
 
 ///|
@@ -49,7 +49,7 @@ fn Fixture::cleanup(self : Fixture) -> Unit {
 async fn get(
   app : @mocket.Mocket,
   url : String,
-  headers? : Map[@http.CaseInsensitiveString, StringView] = {},
+  headers~ : Map[@http.CaseInsensitiveString, StringView] = {},
 ) -> @mocket.HttpResponse {
   @mocket.dispatch_http(app, "GET", url, headers, b"")
 }

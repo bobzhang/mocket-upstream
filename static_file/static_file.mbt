@@ -24,10 +24,10 @@ pub let default_index_names : Array[String] = [
 ///|
 pub fn new(
   path : String,
-  fallthrough? : Bool = false,
-  index_names? : Array[String] = default_index_names,
+  fallthrough~ : Bool = false,
+  index_names~ : Array[String] = default_index_names,
 ) -> StaticFileProvider {
-  { path, fallthrough, index_names }
+  { path, fallthrough, index_names, }
 }
 
 ///|

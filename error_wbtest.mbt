@@ -1,7 +1,8 @@
 ///|
+#derive(Debug)
 suberror TestRequestError {
   TestRequestError(String)
-} derive(Debug)
+}
 
 ///|
 async test "dispatch converts unhandled handler errors to 500" {

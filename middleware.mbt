@@ -7,7 +7,7 @@ pub type Middleware = async (MocketEvent, MiddlewareNext) -> &Responder
 
 ///|
 priv struct MiddlewareTrieEntry {
-  order : Int
+  order : Int32
   middleware : Middleware
 }
 
@@ -19,7 +19,7 @@ priv struct MiddlewareTrieNode {
 
 ///|
 fn new_middleware_trie_node() -> MiddlewareTrieNode {
-  { middlewares: [], children: {} }
+  { middlewares: [], children: {}, }
 }
 
 ///|
@@ -39,7 +39,7 @@ pub fn Mocket::use_middleware(
 fn MiddlewareTrieNode::insert_middleware(
   self : MiddlewareTrieNode,
   base_path : String,
-  order : Int,
+  order : Int32,
   middleware : Middleware,
 ) -> Unit {
   let mut node = self
@@ -53,7 +53,7 @@ fn MiddlewareTrieNode::insert_middleware(
       }
     }
   }
-  node.middlewares.push({ order, middleware })
+  node.middlewares.push({ order, middleware, })
 }
 
 ///|
@@ -165,7 +165,7 @@ pub async fn execute_middlewares(
 // 递归执行中间件链
 async fn execute_middleware_chain(
   middlewares : Array[Middleware],
-  index : Int,
+  index : Int32,
   event : MocketEvent,
   final_handler : HttpHandler,
 ) -> &Responder {
