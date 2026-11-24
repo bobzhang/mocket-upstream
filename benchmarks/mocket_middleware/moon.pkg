@@ -1,5 +1,4 @@
 import {
-  "moonbitlang/async",
   "moonbitlang/core/env",
   "moonbitlang/core/string",
   "oboard/mocket" @mocket_lib,
