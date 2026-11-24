@@ -1,5 +1,5 @@
 ///|
-async fn main {
+async fn main_async() -> Unit {
   let app = @mocket.new()
   app.get("/", e => {
     e.res.set_cookie("session_id", "12345", max_age=3600)
@@ -17,4 +17,9 @@ async fn main {
 
   // Serve
   app.listen("0.0.0.0:3000")
+}
+
+///|
+fn main {
+  @async.run_async_main(main_async)
 }

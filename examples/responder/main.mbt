@@ -2,7 +2,7 @@
 using @mocket {type HttpResponse}
 
 ///|
-async fn main {
+async fn main_async() -> Unit {
   let app = @mocket.new()
 
   // Text Response
@@ -64,4 +64,9 @@ async fn main {
 
   // Serve
   app.listen(":4000")
+}
+
+///|
+fn main {
+  @async.run_async_main(main_async)
 }

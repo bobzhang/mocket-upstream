@@ -1,5 +1,5 @@
 ///|
-async fn main {
+async fn main_async() -> Unit {
   let app = @mocket.new()
   app.use_middleware(logger_middleware())
   // Register global middleware.
@@ -29,4 +29,9 @@ fn logger_middleware() -> @mocket.Middleware {
     println("\{event.req.http_method} \{event.req.url} - \{duration}ms")
     res
   }
+}
+
+///|
+fn main {
+  @async.run_async_main(main_async)
 }
