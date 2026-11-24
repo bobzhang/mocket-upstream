@@ -11,7 +11,7 @@ pub impl Responder for &ToJson with fn options(_, res) -> Unit {
 
 ///|
 pub impl Responder for &ToJson with fn output(self, buf) -> Unit {
-  buf.write_bytes(@utf8.encode(self.to_json().stringify()))
+  buf.write_bytesview(@utf8.encode(self.to_json().stringify()))
 }
 
 ///|
@@ -21,7 +21,7 @@ pub impl Responder for HttpRequest with fn options(self, res) -> Unit {
 
 ///|
 pub impl Responder for HttpRequest with fn output(self, buf) -> Unit {
-  buf.write_bytes(self.raw_body)
+  buf.write_bytesview(self.raw_body)
 }
 
 ///|
@@ -32,7 +32,7 @@ pub impl Responder for HttpResponse with fn options(self, res) -> Unit {
 
 ///|
 pub impl Responder for HttpResponse with fn output(self, buf) -> Unit {
-  buf.write_bytes(self.raw_body)
+  buf.write_bytesview(self.raw_body)
 }
 
 ///|
@@ -42,7 +42,7 @@ pub impl Responder for Json with fn options(_, res) -> Unit {
 
 ///|
 pub impl Responder for Json with fn output(self, buf) -> Unit {
-  buf.write_bytes(@utf8.encode(@json.to_json(self).stringify()))
+  buf.write_bytesview(@utf8.encode(@json.to_json(self).stringify()))
 }
 
 ///|
@@ -52,7 +52,7 @@ pub impl Responder for Bytes with fn options(_, res) -> Unit {
 
 ///|
 pub impl Responder for Bytes with fn output(self, buf) -> Unit {
-  buf.write_bytes(self)
+  buf.write_bytesview(self)
 }
 
 ///|
@@ -62,7 +62,7 @@ pub impl Responder for String with fn options(_, res) -> Unit {
 
 ///|
 pub impl Responder for String with fn output(self, buf) -> Unit {
-  buf.write_bytes(@utf8.encode(self))
+  buf.write_bytesview(@utf8.encode(self))
 }
 
 ///|
@@ -72,7 +72,7 @@ pub impl Responder for StringView with fn options(_, res) -> Unit {
 
 ///|
 pub impl Responder for StringView with fn output(self, buf) -> Unit {
-  buf.write_bytes(@utf8.encode(self))
+  buf.write_bytesview(@utf8.encode(self))
 }
 
 ///|
@@ -85,7 +85,7 @@ pub impl Responder for Html with fn options(_, res) -> Unit {
 
 ///|
 pub impl Responder for Html with fn output(self, buf) -> Unit {
-  buf.write_bytes(@utf8.encode(self.0))
+  buf.write_bytesview(@utf8.encode(self.0))
 }
 
 ///|
