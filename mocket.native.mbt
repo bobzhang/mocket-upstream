@@ -447,7 +447,7 @@ async fn read_body_limited(reader : &@io.Reader, max_size : Int32) -> Bytes {
     for i = 0; i < n; i = i + 1 {
       arr.push(chunk[i])
     }
-    buf.write_bytes(Bytes::from_array(arr))
+    buf.write_bytesview(Bytes::from_array(arr))
     continue total + n
   }
   buf.to_bytes()
@@ -473,7 +473,7 @@ async fn read_ws_limited(reader : &@io.Reader, max_size : Int32) -> Bytes? {
     for i = 0; i < n; i = i + 1 {
       arr.push(chunk[i])
     }
-    buf.write_bytes(Bytes::from_array(arr))
+    buf.write_bytesview(Bytes::from_array(arr))
     continue total + n
   }
   Some(buf.to_bytes())
