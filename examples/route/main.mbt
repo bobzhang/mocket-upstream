@@ -1,5 +1,5 @@
 ///|
-async fn main {
+async fn main_async() -> Unit {
   let port = example_port()
   let address = ":\{port}"
   let app = @mocket.new()
@@ -113,4 +113,9 @@ fn logger_middleware() -> @mocket.Middleware {
     println("\{event.req.http_method} \{event.req.url} - \{duration}ms")
     res
   }
+}
+
+///|
+fn main {
+  @async.run_async_main(main_async)
 }

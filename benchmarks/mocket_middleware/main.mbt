@@ -1,5 +1,5 @@
 ///|
-async fn main {
+async fn main_async() -> Unit {
   let port = benchmark_port()
   let app = @mocket_lib.new()
 
@@ -56,4 +56,9 @@ fn benchmark_port() -> Int32 {
     }
     None => 3000
   }
+}
+
+///|
+fn main {
+  @async.run_async_main(main_async)
 }

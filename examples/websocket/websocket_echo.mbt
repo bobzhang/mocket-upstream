@@ -1,5 +1,5 @@
 ///|
-async fn main {
+async fn main_async() -> Unit {
   let app = @mocket.new()
   app.ws("/ws", event => {
     match event {
@@ -24,4 +24,9 @@ async fn main {
   })
   println("WebSocket echo server listening on ws://localhost:8080/ws")
   app.listen("0.0.0.0:8080")
+}
+
+///|
+fn main {
+  @async.run_async_main(main_async)
 }
