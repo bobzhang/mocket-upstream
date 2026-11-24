@@ -345,7 +345,7 @@ pub fn listen_ffi(mocket : Mocket, address : String) -> Unit {
               if mocket.max_body_size > 0 && total_size > mocket.max_body_size {
                 exceeded = true
               } else {
-                buffer.write_bytes(chunk)
+                buffer.write_bytesview(chunk)
               }
             }
           })
